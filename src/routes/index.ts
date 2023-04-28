@@ -1,9 +1,5 @@
-import { confirmarLeito } from './../../schema';
 import { FastifyInstance } from "fastify";
-import { updateCleanLeitos } from "./controllers/confirmarLimpeza";
-import { getLeitosVagos } from "./controllers/leitos";
 import { login } from "./controllers/login";
-import { getRequestHandle } from "./controllers/requestHandle";
 import { authMiddleware } from "./firebase";
 import { jwtMiddleware } from "./middleware/jwtVeify";
 import { requestPassword } from './controllers/gerarSenha';
