@@ -3,6 +3,8 @@ import { startup } from "./database/dataBaseInit";
 import { appRoutes } from "./routes";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const options = {
   exposeRoute: true,

@@ -3,7 +3,8 @@
 /* eslint-disable require-jsdoc */
 
 /* eslint-disable eol-last */
-require("dotenv").config();
+import dotenv from 'dotenv';
+dotenv.config();
 import oracledb from "oracledb";
 import { dbConfig } from "./configDatabase";
 const fs = require("fs");
@@ -75,7 +76,6 @@ export async function execute(statement: string, binds?: {}, opts?: {}) {
       return rows;
     } else {
       const result = await connection.execute(statement, binds, opts); // executar consulta no banco de dados
-      console.log("🚀 ~ file: conn.ts:80 ~ execute ~ result:", result)
 
       return result;
     }
@@ -84,7 +84,6 @@ export async function execute(statement: string, binds?: {}, opts?: {}) {
     if (err.message.includes("ORA-01403")) {
       return { error: "Nenhum Registro Encontrado" };
     }
-    console.log("🚀 ~ file: conn.ts:90 ~ execute ~ error:", err)
     return { error: err.message };
     // Retornar objeto de erro com status HTTP correspondente
   } finally {

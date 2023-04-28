@@ -16,9 +16,9 @@ const bindVars = {
   pCodigoMaquina: { dir: BIND_IN, type: NUMBER },
   pCdFilas: { dir: BIND_IN, type: NUMBER,},
   pTpFilas: { dir: BIND_IN, type: STRING,},
-  pValido: { dir: oracledb.BIND_OUT, type: STRING, maxSize: 200 },
-  pTxMensagem: { dir: oracledb.BIND_OUT, type: STRING, maxSize: 200  },
-  pSenha: { dir: oracledb.BIND_OUT, type: STRING, maxSize: 200  },
+  pValido: { dir: BIND_OUT, type: STRING, maxSize: 200 },
+  pTxMensagem: { dir: BIND_OUT, type: STRING, maxSize: 200  },
+  pSenha: { dir: BIND_OUT, type: STRING, maxSize: 200  },
 };
 const prGerarSenha = `mvintegra.pkg_totem_senha.pr_gerar_senha`
 export const gerarSenha = async (params: IGerarSenha) => {
@@ -35,7 +35,7 @@ export const gerarSenha = async (params: IGerarSenha) => {
   const sql = `BEGIN ${prGerarSenha}(:pCodigoMaquina, :pCdFilas, :pTpFilas, :pValido, :pTxMensagem, :pSenha); END;`
   try {
       const result = await execute(sql,{ ...bindVars, ...variables }, opts);
-      return result.outBinds.pSenha != null ? {Message: result.outBinds.pSenha} : {Message: result.outBinds.pTxMensagem};
+      return result.outBinds.pSenha != null ? {Senha: result.outBinds.pSenha} : {Message: result.outBinds.pTxMensagem};
   } catch (error) {
     throw new Error(
       `Erro ao gerar a senha: ${error.message}`

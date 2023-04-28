@@ -1,5 +1,7 @@
 /* eslint-disable eol-last */
-require("dotenv").config();
+import dotenv from 'dotenv';
+dotenv.config();
+
 export const dbConfig = {
   user: process.env.NODE_ORACLEDB_USER,
   password: process.env.NODE_ORACLEDB_PASSWORD,

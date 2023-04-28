@@ -2,6 +2,8 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { app } from "../services/firebase.services";
 import { sign, verify } from "jsonwebtoken";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const auth = getAuth(app);
 const secret = process.env.SECURITY_KEY_JWT
@@ -10,7 +12,7 @@ export async function authMiddleware(
   request: FastifyRequest,
   response: FastifyReply,
   next: () => void
-) {
+  ) {
   const authHeader = request.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Basic ")) {
     response.status(401).send({Message: "Unauthorized"});
