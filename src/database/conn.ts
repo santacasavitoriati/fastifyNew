@@ -12,7 +12,7 @@ const fs = require("fs");
 let libPath;
 if (process.platform === "win32") {
   // Windows
-  libPath = "C:\\oracle\\instantclient_19_6";
+  libPath = "C:\\oracle\\instantclient_21_9";
 } else if (process.platform === "darwin") {
   // macOS
   libPath = process.env.HOME + "/Downloads/instantclient_19_6";
@@ -56,11 +56,11 @@ export async function execute(statement: string, binds?: {}, opts?: {}) {
     // Verificando se existe um cursor passado no parâmetro da consulta
     if (hasCursor) {
       const result = await connection.execute(statement, binds, opts);
-      const resultSet = result.outBinds.p_cursor;
-      const resultOut = result.outBinds
-      const row = await resultSet.getRows();
-      await resultSet.close();
-      return [row, resultOut];
+        const resultSet = result.outBinds.pCursor;
+        const row = await resultSet.getRows();
+        await resultSet.close();
+        const resultOut = result.outBinds
+        return [row, resultOut];
     } else if (binds === undefined || binds === null) {
       const result = await connection.execute(statement); // executar consulta no banco de dados
       //Percorrendo o retorna do consulta e retornando as colunas com seu valor como um array
@@ -75,13 +75,16 @@ export async function execute(statement: string, binds?: {}, opts?: {}) {
       return rows;
     } else {
       const result = await connection.execute(statement, binds, opts); // executar consulta no banco de dados
+      console.log("🚀 ~ file: conn.ts:80 ~ execute ~ result:", result)
 
       return result;
     }
+
   } catch (err) {
     if (err.message.includes("ORA-01403")) {
       return { error: "Nenhum Registro Encontrado" };
     }
+    console.log("🚀 ~ file: conn.ts:90 ~ execute ~ error:", err)
     return { error: err.message };
     // Retornar objeto de erro com status HTTP correspondente
   } finally {

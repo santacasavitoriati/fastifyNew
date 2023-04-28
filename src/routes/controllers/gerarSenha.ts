@@ -1,9 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
-import {
-  updateClean,
-  IUpdateCleanParams,
-} from "../../services/confirmaLimpeza.services";
+import { IGerarSenha, gerarSenha } from "../../services/gerarSenha.services";
+
 /**
  * Função genérica para lidar com erros de validação do Zod
  */
@@ -17,21 +15,21 @@ export const handleValidationError = (error: z.ZodError, reply: FastifyReply) =>
 
 
 
-export const updateCleanLeitos = async (
+export const requestPassword = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
-  const updateCleanSchema = z.object({
-    cd_solicitacao: z.number(),
-    cd_tpLimpeza: z.number(),
-    cd_funcionario: z.number(),
+  const requestPasswordSchema = z.object({
+    codigoMaquina: z.string(),
+    cdFila: z.number(),
+    tpFila: z.string(),
   });
 
   try {
-    const params: IUpdateCleanParams = updateCleanSchema.parse(
+    const params: IGerarSenha = requestPasswordSchema.parse(
       request.body
-    ) as IUpdateCleanParams;
-    const result = await updateClean(params);
+    ) as IGerarSenha;
+    const result = await gerarSenha(params);
     return reply.status(200).send(result);
   } catch (error) {
     if (error instanceof z.ZodError) {

@@ -1,60 +1,38 @@
 import { confirmarLeito } from './../../schema';
 import { FastifyInstance } from "fastify";
-import { teste } from "../services/teste.services";
 import { updateCleanLeitos } from "./controllers/confirmarLimpeza";
 import { getLeitosVagos } from "./controllers/leitos";
 import { login } from "./controllers/login";
 import { getRequestHandle } from "./controllers/requestHandle";
-import { authMiddleware } from "./middleware/firebase";
+import { authMiddleware } from "./firebase";
 import { jwtMiddleware } from "./middleware/jwtVeify";
+import { requestPassword } from './controllers/gerarSenha';
+import { requestTipoFilas } from './controllers/tiposFilas';
+import { requestFilas } from './controllers/retornarFilas';
 
 
 
 
 export async function appRoutes(app: FastifyInstance) {
   app.route({
-    method: "GET",
-    url: "/solicitacao",
-    schema: {
-      description: "Endpoint para buscar solicitações",
-      tags: ["solicitacao"],
-      querystring: {
-        type: "object",
-        properties: {
-          cd_leito: { type: "string" },
-        },
-        required: ["cd_leito"],
-      },
-    },
-    preHandler: jwtMiddleware,
-    handler: getRequestHandle,
-  });
-
-  app.route({
-    method: "GET",
-    url: "/leitos",
-    preHandler: jwtMiddleware,
-    schema: {
-      description: "Endpoint para buscar leitos vagos",
-      tags: ["leitos"],
-    },
-    handler: getLeitosVagos,
-  });
-
-  app.route({
     method: "POST",
-    url: "/ConfirmarLimpeza",
+    url: "/gerarSenha",
     preHandler: jwtMiddleware,
-    schema: confirmarLeito,
-    handler: updateCleanLeitos
+    handler: requestPassword,
   });
-  
 
   app.route({
     method: "GET",
-    url: "/",
+    url: "/retornarTiposFilas",
     preHandler: jwtMiddleware,
-    handler: teste,
+    handler: requestTipoFilas,
+  });
+
+  app.route({
+    method: "GET",
+    url: "/retornarFilas",
+    preHandler: jwtMiddleware,
+    handler: requestFilas,
   });
 
   app.route({
